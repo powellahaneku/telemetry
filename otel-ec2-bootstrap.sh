@@ -63,6 +63,8 @@ service:
     traces:
       receivers: [otlp]
       exporters: [jaeger, logging, file]
+volumes:
+  otel_data:
 
 EOF
 
