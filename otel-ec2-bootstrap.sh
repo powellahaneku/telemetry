@@ -21,6 +21,7 @@ services:
     command: ["--config=/etc/otelcol/config.yaml"]
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol/config.yaml
+      - otel_data:/var/lib/otel-collector    
     ports:
       - "4317:4317"
       - "4318:4318"
@@ -32,6 +33,7 @@ services:
     ports:
       - "16686:16686"
       - "14250:14250"
+
 EOF
 
 echo "📘 Creating otel-collector-config.yaml..."
