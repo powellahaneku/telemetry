@@ -43,6 +43,11 @@ receivers:
       http:
 
 exporters:
+  file:
+    path: /var/lib/otel-collector/trace-output.json
+    rotation:
+      max_megabytes: 5
+      max_days: 7
   jaeger:
     endpoint: jaeger:14250
     tls:
@@ -50,11 +55,13 @@ exporters:
   logging:
     loglevel: debug
 
+
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [jaeger, logging]
+      exporters: [jaeger, logging, file]
+
 EOF
 
 echo "🚀 Starting the stack..."
