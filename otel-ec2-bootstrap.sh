@@ -1,10 +1,11 @@
 #!/bin/bash
 
-echo "🔧 Installing Docker and Docker Compose..."
-sudo apt update -y
-sudo apt install -y docker.io docker-compose
+echo "🔧 Installing Docker..."
+sudo yum update -y
+sudo yum install -y docker git curl
+sudo systemctl start docker
 sudo systemctl enable docker
-sudo usermod -aG docker ubuntu
+sudo usermod -aG docker ec2-user
 
 echo "📁 Creating otel-stack folder..."
 mkdir -p ~/otel-stack
@@ -12,7 +13,7 @@ cd ~/otel-stack
 
 echo "📦 Creating docker-compose.yml..."
 cat <<EOF > docker-compose.yml
-version: "3.9"
+version: "3"
 services:
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
@@ -57,7 +58,7 @@ service:
 EOF
 
 echo "🚀 Starting the stack..."
-sudo docker compose up -d
+sudo docker compose -f docker-compose.yml up -d
 
 echo "✅ Done. OpenTelemetry Collector is running."
 echo "🌐 Jaeger UI: http://<your-ec2-ip>:16686"
