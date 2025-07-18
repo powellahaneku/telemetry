@@ -64,7 +64,8 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      exporters: [jaeger, logging, file]
+      exporters: [jaeger, debug, file]
+
 EOF
 
 echo "🚀 Starting the stack..."
