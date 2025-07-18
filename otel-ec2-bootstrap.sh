@@ -34,6 +34,9 @@ services:
       - "16686:16686"
       - "14250:14250"
 
+volumes:
+  otel_data:
+
 EOF
 
 echo "📘 Creating otel-collector-config.yaml..."
@@ -57,19 +60,16 @@ exporters:
   logging:
     loglevel: debug
 
-
 service:
   pipelines:
     traces:
       receivers: [otlp]
       exporters: [jaeger, logging, file]
-volumes:
-  otel_data:
-
 EOF
 
 echo "🚀 Starting the stack..."
-sudo docker compose -f docker-compose.yml up -d
+sudo docker-compose -f docker-compose.yml up -d
 
+EC2_PUBLIC_IP=$(curl -s http://checkip.amazonaws.com)
 echo "✅ Done. OpenTelemetry Collector is running."
-echo "🌐 Jaeger UI: http://<your-ec2-ip>:16686"
+echo "🌐 Jaeger UI: http://${EC2_PUBLIC_IP}:16686"
